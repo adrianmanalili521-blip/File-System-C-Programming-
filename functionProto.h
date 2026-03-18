@@ -6,5 +6,10 @@
 void initRootFolder(rootFolNode *rootFol);
 void initSubFolders(folderNode *folNode, char folderName[16]);
 
+void displayCommands();
+void insertToParentFolder(rootFolNodePtr rootFol, folderNodePtr folNode);
+void createFolderNode(rootFolNodePtr rootFol, char folderName[16]);
+void displayFolderContents(rootFolNode rootFol);
+
 
 #endif
