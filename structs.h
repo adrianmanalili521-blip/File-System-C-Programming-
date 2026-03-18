@@ -1,24 +1,26 @@
 #ifndef STRUCTS_H
 #define STRUCTS_H
 
-typedef struct File {
+#define MAX 100
+
+typedef struct FileNode {
+    //file can contain these members
     char fileName[16];
-    char str[100];
+    char text[100];
 } fileNode;
 
-typedef struct Folder {
+typedef struct FolderNode {
+    //a folder can contain current folderName, subfolders and other files;
     char folderName[16];
-    struct Folder* folderPtr[100];
-    struct File* filePtr[100]
-    int count;
-} folderNode;
+    struct FolderNode* folderPtr[MAX];
+    fileNode* filePtr[MAX];
+} folderNode;   
 
 typedef struct RootFolder {
-    char folderName[16];
-    struct File* filePtr[100];
-    struct Folder* folderPtr[100];
-    int count;
+    //there can be only one root folder, can contain subfolders and files and rootfolderName
+    char rootFolName[16];
+    folderNode* folderPtr[MAX];
+    fileNode* filePtr[MAX];
 } rootFolNode;
-
 
 #endif
