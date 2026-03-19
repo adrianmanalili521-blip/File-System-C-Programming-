@@ -9,31 +9,6 @@
 
 #define MAX 100
 
-void initRootFolder(rootFolNodePtr rootFol){
-    strcpy(rootFol->rootFolName, "root");
-
-    for (int i = 0; i < MAX; i++){
-        rootFol->folderPtr[i] = NULL;
-        rootFol->filePtr[i] = NULL;
-    }
-
-    rootFol->folderCount = 0;
-    rootFol->fileCount = 0; 
-    rootFol->totalCount = 0;
-}
-
-void initSubFolders(folderNodePtr folNode, char folderName[16]){
-    strcpy(folNode->folderName, folderName);
-    
-    for (int i = 0; i < MAX; i++){
-        folNode->folderPtr[i] = NULL;
-        folNode->filePtr[i] = NULL;
-    }
-    folNode->folderCount = 0;
-    folNode->fileCount = 0;
-    folNode->totalCount = 0;
-}
-
 #define RED   "\033[31m"
 #define GREEN "\033[32m"
 #define BLUE  "\033[34m"
@@ -57,38 +32,48 @@ void displayCommands(){
     printf(": used to remove file or folder\n");
 }
 
-void createFolderNode(rootFolNodePtr rootFol, char folderName[16]){
-    folderNodePtr folNode = (folderNodePtr)malloc(sizeof(folderNode));
-
-    if (folNode == NULL){
-        printf("Memory Allocation failed for createFolderNode()");
-    } else {
-        initSubFolders(folNode, folderName);
-        insertToParentFolder(rootFol, folNode);
+void initRootFolder (folderNodePtr folder){
+    strcpy(folder->folderName, "root");
+    for (int i = 0; i < MAX; i++){
+        folder->folderPtrArr[i] = NULL;
+        folder->filePtrArr[i] = NULL;
     }
-
+    folder->folderCount = 0;
+    folder->fileCount = 0;
+    folder->totalCount = 0;
 }
 
-void insertToParentFolder(rootFolNodePtr rootFol, folderNodePtr folNode){
-    if (rootFol->totalCount != MAX-1){
-        rootFol->folderPtr[rootFol->folderCount] = folNode;
-        (rootFol->folderCount)++;
-        (rootFol->totalCount)++;
+void createFolder (folderNodePtr parentFolder, char folderName[16]){
+    folderNodePtr newFolder = (folderNodePtr)malloc(sizeof(folderNode));
+
+    if (newFolder == NULL) {
+        printf(RED "Failed to Allocated Memory: createFolder()\n" RESET);
     } else {
-        printf(RED "Parent Folder is full!\n\n" RESET);
+        strcpy(newFolder->folderName, folderName);
+        insertFolder(parentFolder, newFolder);
     }
 }
 
-void displayFolderContents(rootFolNode rootFol){
-    printf("folder name: %s\n", rootFol.rootFolName);
+void insertFolder (folderNodePtr parentFolder, folderNodePtr newFolder){
+    parentFolder->folderPtrArr[parentFolder->folderCount] = newFolder;
+    (parentFolder->folderCount)++;
+    (parentFolder->totalCount)++;
+}
+
+void displayContents (folderNode parentFolder){
+    printf("%s:\n", parentFolder.folderName);
     printf("folders:\n");
-    for (int i = 0; i < rootFol.folderCount; i++){
-        printf("%s\n", (rootFol.folderPtr[i])->folderName);
+    for (int i = 0; i < parentFolder.folderCount; i++){
+        printf("%s\n", parentFolder.folderPtrArr[i]->folderName);
     }
     printf("files:\n");
-    for (int j = 0; j < rootFol.fileCount; j++){
-        printf("%s\n", (rootFol.filePtr[j])->fileName);
+    for (int j = 0; j < MAX; j++){
+        printf("%s\n", parentFolder.filePtrArr[j]->fileName);
     }
-    printf("total count: %d\n", rootFol.totalCount);
+    printf("folder count: %d\n", parentFolder.folderCount);
+    printf("file count: %d\n", parentFolder.fileCount);
+    printf("total count: %d\n", parentFolder.totalCount);
 }
+
+
 #endif 

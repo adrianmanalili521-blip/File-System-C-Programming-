@@ -3,13 +3,13 @@
 
 #include "structs.h"
 
-void initRootFolder(rootFolNode *rootFol);
-void initSubFolders(folderNode *folNode, char folderName[16]);
+void initRootFolder (folderNodePtr folder);
 
-void displayCommands();
-void insertToParentFolder(rootFolNodePtr rootFol, folderNodePtr folNode);
-void createFolderNode(rootFolNodePtr rootFol, char folderName[16]);
-void displayFolderContents(rootFolNode rootFol);
+void createFolder (folderNodePtr parentFolder, char folderName[16]);
+
+void insertFolder (folderNodePtr parentFolder, folderNodePtr newFolder);
+
+void displayContents (folderNode parentFolder);
 
 
 #endif

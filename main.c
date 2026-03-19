@@ -11,15 +11,11 @@
 #define RESET "\033[0m"
 
 int main(){
-    rootFolNode rootFolNode;
-    initRootFolder(&rootFolNode);
+    folderNode rootFolder;
+    initRootFolder(&rootFolder);
 
-    char folderName[16];
-    char fileName[16];
-    char text[100];
     char command[16];
-
-    printf (GREEN "your programs is now running...\n\n" RESET);
+    char folderName[16];
 
     do {
         fgets(command, sizeof(command), stdin);
@@ -27,35 +23,33 @@ int main(){
 
         if (strcmp(command, "--help")==0){
             displayCommands();
+        } else if (strcmp(command, "cd ..")==0) {
+            printf("cd ..\n");
+        } else if (strcmp(command, "cd something")==0){
+            printf("if symptoms persist consult your programmer\n");
+        } else if (strcmp(command, "ls")==0){
+            displayContents(rootFolder);
         } else if (strcmp(command, "touch")==0) {
-            printf("if bugs persist consult your programmer :)\n");
+            printf("touch\n");
         } else if (strcmp(command, "mkdir")==0) {
-            printf("Enter folder Name: ");
+            printf("name of folder: ");
             fgets(folderName, sizeof(folderName), stdin);
-            folderName[strcspn(folderName, "\n")] = '\0';
-            createFolderNode(&rootFolNode, folderName);
-        } else if (strcmp(command, "ls")==0) {
-            displayFolderContents(rootFolNode);
-        } else if (strcmp(command, "find")==0) {
-            printf("if bugs persist consult your programmer :)\n");
-        } else if (strcmp(command, "write")==0) {
-            printf("if bugs persist consult your programmer :)\n");
-        } else if (strcmp(command, "append")==0) {
-            printf("if bugs persist consult your programmer :)\n");
+            if (strcmp(folderName, "")!=0){
+                createFolder(&rootFolder, folderName);
+            } else {
+                printf(RED "coud not create folder\n" RESET);
+            }
+        } else if (strcmp(command, "find something")==0) {
+            printf("find folder path\n");
         } else if (strcmp(command, "rm")==0) {
-            printf("if bugs persist consult your programmer :)\n");
+            printf("rm\n");
         } else {
-            printf(RED "Invalid Command " RESET);
-            printf(", use ");
-            printf(GREEN "--help" RESET);
-            printf(" to view commands\n");
+            printf(RED "Invalid Command, enter ", RESET);
+            printf(GREEN "--help " RESET);
+            printf("to view commands\n");
         }
 
     } while (1);
-
-    
-
-
 
     return 0;
 }
