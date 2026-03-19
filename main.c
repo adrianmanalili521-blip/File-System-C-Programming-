@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
 
 #include "functionDef.h"
 #include "functionProto.h"
@@ -16,6 +17,14 @@ int main(){
 
     char command[16];
     char folderName[16];
+
+    printf(RED "something is happening!...\n" RESET);
+    sleep(2);
+    printf(BLUE "or maybe not..\n" RESET );
+    sleep(3);
+    printf(RED "oh! wait! there is!..\n" RESET);
+    sleep(2);
+    printf(GREEN "your program is now running hehe...\n\n" RESET);
 
     do {
         fgets(command, sizeof(command), stdin);
