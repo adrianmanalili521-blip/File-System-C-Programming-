@@ -11,5 +11,9 @@ void insertFolder (folderNodePtr parentFolder, folderNodePtr newFolder);
 
 void displayContents (folderNode parentFolder);
 
+void createFile (folderNodePtr parentFolder, char fileName[16], char text[100]);
+
+void insertFile (folderNodePtr parentFolder, fileNodePtr newFile);
+
 
 #endif
