@@ -19,6 +19,8 @@ void UserInput () {
 
     char command[16];
     char folderName[16];
+    char fileName[16];
+    char text[100];
 
     do {
         printf("%s\\", folderPtr->folderName);
@@ -36,6 +38,17 @@ void UserInput () {
             folderName[strcspn(folderName, "\n")] = '\0';
 
             createFolder((*trav), folderName);
+        } else if (strcmp(command, "touch")==0) {
+            printf("Enter file name: ");
+            fgets(fileName, sizeof(fileName), stdin);
+            fileName[strcspn(fileName, "\n")] = '\0';
+
+            printf("Enter text: ");
+            fgets(text, sizeof(text), stdin);
+            text[strcspn(text, "\n")] = '\0';
+
+
+            createFile((*trav), fileName, text);
         }
 
         else {

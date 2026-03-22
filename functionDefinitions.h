@@ -41,7 +41,7 @@ void disPlayContents(folderNode folder) {
         if (j % 2 == 1) {
             printf(YELLOW "%s\n" RESET, folder.files[j]->fileName);
         } else {
-            printf(YELLOW "%s" RESET, folder.files[j]->fileName);
+            printf(YELLOW "%s " RESET, folder.files[j]->fileName);
         }
     }
     printf("\n");
@@ -57,6 +57,22 @@ void createFolder(folderNodePtr folder, char folderName[16]) {
         (folder->totalCount)++;
     } else {
         printf(RED "maximum capacity reached for folder: %s" RESET, folder->folderName);
+    }
+}
+
+void createFile(folderNodePtr folder, char fileName[16], char text[100]) {
+    if (folder->fileCount != MAX && folder->totalCount != MAX) {
+        fileNodePtr newFile = (fileNodePtr)malloc(sizeof(fileNode));
+            if (newFile == NULL){
+                printf("Memory Allocation Failed: createFile()\n");
+            } else {
+                strcpy(newFile->fileName, fileName);
+                strcpy(newFile->text, text);
+                folder->files[folder->fileCount] = newFile;
+
+                (folder->fileCount)++;
+            (folder->totalCount)++;
+        }
     }
 }
 

@@ -9,4 +9,6 @@ void disPlayContents(folderNode folder);
 
 void createFolder(folderNodePtr folder, char folderName[16]);
 
+void createFile(folderNodePtr folder, char fileName[16], char text[100]);
+
 #endif
