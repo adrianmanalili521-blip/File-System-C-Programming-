@@ -2,16 +2,15 @@
 #include <string.h>
 
 
-#include "functionDef.h"
-#include "functionProto.h"
+#include "functionDefinitions.h"
+#include "functionPrototypes.h"
 #include "structs.h"
-#include "input.h"
+#include "userInput.h"
 
 
 
 int main(){
     UserInput();
-
 
     return 0;
 }

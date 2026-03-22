@@ -3,19 +3,19 @@
 
 #define MAX 100
 
-typedef struct File {
+typedef struct Files {
     char fileName[16];
-    char text[100];
+    char text[MAX];
 } fileNode, *fileNodePtr;
 
-typedef struct Folder {
+typedef struct Folders {
+    struct Folders* prevFolder;
     char folderName[16];
-    struct Folder* folderPtrArr[MAX];
-    fileNodePtr filePtrArr[MAX];
-    int folderCount;
+    fileNodePtr files[MAX];
+    struct Folders* folders[MAX];
     int fileCount;
-    int totalCount;     // per directory maximum capacity is 100
+    int folderCount;
+    int totalCount;
 } folderNode, *folderNodePtr;
-
 
 #endif
