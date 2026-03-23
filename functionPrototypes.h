@@ -3,12 +3,18 @@
 
 #include "structs.h"
 
-void initFolder(folderNodePtr* folderPtr, char folderName[16]); //used to initilize folders
+void initFolder(folderNodePtr* folderPtr, char folderName[16], char path[100]); //used to initilize folders
 
 void disPlayContents(folderNode folder);
 
 void createFolder(folderNodePtr folder, char folderName[16]);
 
 void createFile(folderNodePtr folder, char fileName[16], char text[100]);
+
+int searchFolder(folderNode folder, char folderName[16]);
+
+folderNodePtr* getFolAdress(folderNodePtr folder, char folderName[16]);
+
+void displayCommands();
 
 #endif

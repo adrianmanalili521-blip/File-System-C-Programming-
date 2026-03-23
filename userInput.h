@@ -5,15 +5,16 @@
 #include "functionPrototypes.h"
 #include "structs.h"
 #include "myColors.h"
-    
+#include "displayCommands.h"
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
 
 void UserInput () {
     folderNodePtr folderPtr;
-    initFolder(&folderPtr, "root");
+    initFolder(&folderPtr, "root", "root\\");
     folderNodePtr* trav = &folderPtr;
+    folderNodePtr* temp = NULL;
 
     printf(GREEN "Your program is running...\n" RESET);
 
@@ -23,15 +24,14 @@ void UserInput () {
     char text[100];
 
     do {
-        printf("%s\\", folderPtr->folderName);
+        printf("%s", (*trav)->path);
         fgets(command, sizeof(command), stdin);
         command[strcspn(command, "\n")] = '\0';
 
         if (strcmp(command, "--help")==0) {
-            printf(RED "something went wrong, " RESET);
-            printf("if symptoms persist consult your programmer.\n");
+            displayCommands();
         } else if (strcmp(command, "ls")==0) {
-            disPlayContents((*folderPtr));
+            disPlayContents((**trav));
         } else if (strcmp(command, "mkdir")==0) {
             printf("Enter folderName: ");
             fgets(folderName, sizeof(folderName), stdin);
@@ -49,6 +49,21 @@ void UserInput () {
 
 
             createFile((*trav), fileName, text);
+        } else if (strcmp(command, "cd")==0) {
+            printf("Enter folder name: ");
+            fgets(folderName, sizeof(folderName), stdin);
+            folderName[strcspn(folderName, "\n")] ='\0';
+
+            temp = getFolAdress((*trav), folderName);
+            if (temp != NULL) trav = temp;
+
+        } else if (strcmp(command, "cd ..")==0) {
+            if ((*trav)->prevFolder != NULL) {
+                trav = &(*trav)->prevFolder;
+
+            }
+        } else if (strcmp(command, "cd ~")==0) {
+            trav = &folderPtr;
         }
 
         else {

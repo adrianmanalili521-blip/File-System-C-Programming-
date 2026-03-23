@@ -16,6 +16,7 @@ typedef struct Folders {
     int fileCount;
     int folderCount;
     int totalCount;
+    char path[MAX];
 } folderNode, *folderNodePtr;
 
 #endif

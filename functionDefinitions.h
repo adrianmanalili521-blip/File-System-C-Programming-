@@ -10,12 +10,13 @@
 
 #define MAX 100
 
-void initFolder(folderNodePtr* folderPtr, char folderName[16]) {
+void initFolder(folderNodePtr* folderPtr, char folderName[16], char path[MAX]) {
     (*folderPtr) = (folderNodePtr)malloc(sizeof(folderNode));
     if ((*folderPtr) == NULL) {
         printf(RED "memory allocation failed: initFolder()\n" RESET);
     } else {
         strcpy((*folderPtr)->folderName, folderName);
+        strcpy((*folderPtr)->path, path);
         for (int i = 0; i < MAX; i++){
             (*folderPtr)->prevFolder = NULL;
             (*folderPtr)->files[i] = NULL;
@@ -50,7 +51,11 @@ void disPlayContents(folderNode folder) {
 void createFolder(folderNodePtr folder, char folderName[16]) {
     if (folder->folderCount != MAX && folder->totalCount != MAX) {
         folderNodePtr newFolder;
-        initFolder(&newFolder, folderName);
+        char path[MAX] = ""; 
+        strcat(path, folder->path);
+        strcat(path, folderName);
+        strcat(path, "\\");
+        initFolder(&newFolder, folderName, path);
         newFolder->prevFolder = folder;
         folder->folders[folder->folderCount] = newFolder;
         (folder->folderCount)++;
@@ -76,5 +81,27 @@ void createFile(folderNodePtr folder, char fileName[16], char text[100]) {
     }
 }
 
+int searchFolder(folderNode folder, char folderName[16]) {
+    int index = -1;
+    for (int i = 0; i < folder.folderCount; i++) {
+        if (strcmp(folder.folders[i]->folderName, folderName)==0) {
+            index = i;
+            break;
+        }
+    }
+    return index; 
+}
+
+folderNodePtr* getFolAdress(folderNodePtr folder, char folderName[16]) {    
+    int index = searchFolder((*folder), folderName);
+    folderNodePtr* folderPtr = NULL;
+    if (index != -1) {
+        folderPtr = &(folder->folders)[index];
+    } else {
+        printf(RED "folder not found!\n" RESET);
+    }
+
+    return folderPtr;
+}
 
 #endif 
