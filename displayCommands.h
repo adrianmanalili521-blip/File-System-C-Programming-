@@ -9,7 +9,7 @@ void displayCommands() {
     printf(CYAN "mkdir" RESET);
     printf(": used to create folder\n"); 
     printf(CYAN "touch" RESET);
-    printf(": used to create file");
+    printf(": used to create file\n");
     printf(YELLOW "cd" RESET);
     printf(": used to enter a directory\n");
     printf(YELLOW "cd .." RESET);
