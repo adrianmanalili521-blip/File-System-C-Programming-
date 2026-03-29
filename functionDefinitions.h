@@ -17,13 +17,15 @@ void initFolder(folderNodePtr* folderPtr, char folderName[16], char path[MAX]) {
     } else {
         strcpy((*folderPtr)->folderName, folderName);
         strcpy((*folderPtr)->path, path);
-        for (int i = 0; i < MAX; i++){
-            (*folderPtr)->prevFolder = NULL;
+        (*folderPtr)->prevFolder = NULL;
+        (*folderPtr)->fileCount = 0;
+        (*folderPtr)->folderCount = 0;
+        (*folderPtr)->totalCount = 0;
+        (*folderPtr)->nextFreeFileIndex = 0;
+        (*folderPtr)->nextFreeFolIndex = 0;
+        for (int i = 0; i < MAX; i++) {
             (*folderPtr)->files[i] = NULL;
             (*folderPtr)->folders[i] = NULL;
-            (*folderPtr)->fileCount = 0;
-            (*folderPtr)->folderCount = 0;
-            (*folderPtr)->totalCount = 0;
         }
     }
 }
@@ -31,14 +33,20 @@ void initFolder(folderNodePtr* folderPtr, char folderName[16], char path[MAX]) {
 void disPlayContents(folderNode folder) {
     printf("\nfolders:\n");
     for (int i = 0; i < folder.folderCount; i++) {
+        if (folder.folders[i] == NULL) {
+            continue;
+        }
         if (i % 2 == 1) {
             printf(BLUE "%s\n" RESET, folder.folders[i]->folderName);
         } else {
-            printf(BLUE "%s " RESET, folder.folders[i]->folderName );
+            printf(BLUE "%s " RESET, folder.folders[i]->folderName);
         }
     }
     printf("\n\nfiles:\n");
     for (int j = 0; j < folder.fileCount; j++) {
+        if (folder.files[j] == NULL) {
+            continue;
+        }
         if (j % 2 == 1) {
             printf(YELLOW "%s\n" RESET, folder.files[j]->fileName);
         } else {
@@ -49,19 +57,19 @@ void disPlayContents(folderNode folder) {
 }
 
 void createFolder(folderNodePtr folder, char folderName[16]) {
-    if (folder->folderCount != MAX && folder->totalCount != MAX) {
+    if (folder->folderCount < MAX && folder->totalCount < MAX) {
         folderNodePtr newFolder;
-        char path[MAX] = ""; 
+        char path[MAX] = "";
         strcat(path, folder->path);
         strcat(path, folderName);
         strcat(path, "\\");
         initFolder(&newFolder, folderName, path);
         newFolder->prevFolder = folder;
         folder->folders[folder->folderCount] = newFolder;
-        (folder->folderCount)++;
-        (folder->totalCount)++;
+        folder->folderCount++;
+        folder->totalCount++;
     } else {
-        printf(RED "maximum capacity reached for folder: %s" RESET, folder->folderName);
+        printf(RED "maximum capacity reached for folder: %s\n" RESET, folder->folderName);
     }
 }
 
@@ -84,7 +92,7 @@ void createFile(folderNodePtr folder, char fileName[16], char text[100]) {
 int searchFolder(folderNode folder, char folderName[16]) {
     int index = -1;
     for (int i = 0; i < folder.folderCount; i++) {
-        if (strcmp(folder.folders[i]->folderName, folderName)==0) {
+        if (folder.folders[i] != NULL && strcmp(folder.folders[i]->folderName, folderName)==0) {
             index = i;
             break;
         }
@@ -92,16 +100,50 @@ int searchFolder(folderNode folder, char folderName[16]) {
     return index; 
 }
 
-folderNodePtr* getFolAdress(folderNodePtr folder, char folderName[16]) {    
-    int index = searchFolder((*folder), folderName);
-    folderNodePtr* folderPtr = NULL;
+folderNodePtr getFolAdress(folderNodePtr folder, char folderName[16]) {
+    int index = searchFolder(*folder, folderName);
     if (index != -1) {
-        folderPtr = &(folder->folders)[index];
+        return folder->folders[index];
     } else {
         printf(RED "folder not found!\n" RESET);
+        return NULL;
+    }
+}
+
+static void freeFolderRecursive(folderNodePtr folder) {
+    if (folder == NULL) return;
+    for (int i = 0; i < folder->folderCount; i++) {
+        if (folder->folders[i] != NULL) {
+            freeFolderRecursive(folder->folders[i]);
+            folder->folders[i] = NULL;
+        }
+    }
+    for (int j = 0; j < folder->fileCount; j++) {
+        if (folder->files[j] != NULL) {
+            free(folder->files[j]);
+            folder->files[j] = NULL;
+        }
+    }
+    free(folder);
+}
+
+void removeFolder(folderNodePtr folder, int index) {
+    if (folder == NULL || index < 0 || index >= folder->folderCount) {
+        return;
     }
 
-    return folderPtr;
+    folderNodePtr target = folder->folders[index];
+    if (target != NULL) {
+        freeFolderRecursive(target);
+    }
+
+    for (int i = index; i < folder->folderCount - 1; i++) {
+        folder->folders[i] = folder->folders[i + 1];
+    }
+    folder->folders[folder->folderCount - 1] = NULL;
+
+    folder->folderCount--;
+    folder->totalCount--;
 }
 
 #endif 

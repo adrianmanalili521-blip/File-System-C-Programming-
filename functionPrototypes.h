@@ -13,8 +13,10 @@ void createFile(folderNodePtr folder, char fileName[16], char text[100]);
 
 int searchFolder(folderNode folder, char folderName[16]);
 
-folderNodePtr* getFolAdress(folderNodePtr folder, char folderName[16]);
+folderNodePtr getFolAdress(folderNodePtr folder, char folderName[16]);
 
 void displayCommands();
+
+void removeFolder(folderNodePtr folder, int index);
 
 #endif
