@@ -5,15 +5,19 @@
 - Practice pointers, dynamic memory, and data structure traversal.
 - Add and remove folders/files, and navigate with shell-like commands.
 
-## Provided starter code
+## Provided starter directories
+- `student-exercise/starter` (incomplete functions for students)
+- `student-exercise/solution` (complete reference implementation)
+
+### Starter files (to complete)
 - `main.c`
 - `structs.h`
 - `functionPrototypes.h`
-- `functionDefinitions.h`
+- `functionDefinitions.h` (function stubs, TODO)
 - `userInput.h`
 - `displayCommands.h`
 - `myColors.h`
-- `README.md` (project overview)
+- `README.md` (instructions)
 
 ## Required features
 1. `mkdir <name>` - create a new directory inside the current folder.
